@@ -1,0 +1,25 @@
+# Publishes the static site: every push to main is mirrored to the gh-pages branch,
+# which GitHub Pages serves at https://harivansh-b.github.io/Chronos/ (no build step needed).
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Push main to gh-pages
+        run: git push --force origin HEAD:refs/heads/gh-pages
